@@ -46,7 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
               textColor: Colors.white,
               child: Text('测试get'),
               onPressed: () {
-                HXHHttpUtils().getRequest('www.baidu.com');
+                HXHHttpUtils().getRequest('ss', {}, completion(int, ){
+
+                });
 
               },
             ),
