@@ -1,9 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'hxh_flutter_kit/http_util/hxh_http_utils.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -46,9 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('测试get'),
               onPressed: () {
                 HXHHttpUtils().getRequest('www.baidu.com');
-//                this.setState(() {
-//                  _str = resp.data.toString();
-//                });
+
               },
             ),
             Text(
