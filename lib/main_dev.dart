@@ -46,10 +46,24 @@ class _MyHomePageState extends State<MyHomePage> {
               textColor: Colors.white,
               child: Text('测试get'),
               onPressed: () {
-                HXHHttpUtils().getRequest('ss', {}, completion(int, ){
-
+//                http://192.168.0.24:8769/admin/v2.0/work/driverList?limit=123&page=1&username=1
+                String path = 'http://192.168.0.24:8769/admin/v2'
+                    '.0/work/driverList';
+                Map param = {
+                  'username': '18513500000',
+                  'page': '1',
+                  'limit': '999'
+                };
+                HXHHttpUtils().getRequest(path, param,
+                    (int state, bool isSuccess, dynamic resp) {
+                  print('state : ' +
+                      state.toString() +
+                      '\nresp : ' +
+                      resp.toString());
+                  this.setState(() {
+                    _str = resp.toString();
+                  });
                 });
-
               },
             ),
             Text(

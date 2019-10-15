@@ -6,10 +6,10 @@ class HXHHttpUtils {
   BaseOptions options;
 
   /*get*/
-
   getRequest(String path, Map param, Function(int state, bool isSuccess, dynamic resp) completion) async {
     try {
-      Response response = await Dio().get(path);
+      Response response = await Dio().get(path, queryParameters: Map<String, dynamic>.from
+        (param));
       print(response.toString());
       if (response.statusCode == 200)
         switch(response.statusCode){
