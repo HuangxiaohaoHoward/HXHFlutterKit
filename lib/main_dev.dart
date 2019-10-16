@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:core';
 
-import 'hxh_flutter_kit/http_util/hxh_http_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:hxh_flutter_kit/good_driver/NetworkManager/commonModels/sdg_cooperator_model.dart';
+import 'package:hxh_flutter_kit/good_driver/NetworkManager/network_manager.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,24 +49,32 @@ class _MyHomePageState extends State<MyHomePage> {
               textColor: Colors.white,
               child: Text('测试get'),
               onPressed: () {
-//                http://192.168.0.24:8769/admin/v2.0/work/driverList?limit=123&page=1&username=1
-                String path = 'http://192.168.0.24:8769/admin/v2'
-                    '.0/work/driverList';
+                this.setState(() {
+                  _str = '请求中';
+                });
                 Map param = {
                   'username': '18513500000',
                   'page': '1',
-                  'limit': '999'
+                  'limit': '999',
                 };
-                HXHHttpUtils().getRequest(path, param,
-                    (int state, bool isSuccess, dynamic resp) {
-                  print('state : ' +
-                      state.toString() +
-                      '\nresp : ' +
-                      resp.toString());
-                  this.setState(() {
-                    _str = resp.toString();
-                  });
+                SDGDataManager().getCooperation(param, (state, isSuccess, resp){
+                  if (isSuccess) {
+                    for (var i = 0; i < resp.length; ++i) {
+                      SDGCooperatorModel model = resp[i];
+                      this.setState((){
+                        _str = _str + '\n' + model.customerName;
+
+                      });
+                    }
+                  } else {
+                    this.setState((){
+                      _str = resp.toString();
+
+                    });
+                  }
+
                 });
+
               },
             ),
             Text(
