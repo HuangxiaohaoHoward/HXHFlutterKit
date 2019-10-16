@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 
 enum RequestType {
@@ -8,6 +5,7 @@ enum RequestType {
   post,
   put,
   delete,
+  upload,
 }
 
 class BaseUrl {
@@ -60,6 +58,14 @@ class HXHHttpUtils {
           {
             break;
           }
+        case RequestType.upload:
+          {
+            break;
+          }
+        default:
+          {
+            break;
+          }
       }
 
       if (response.statusCode == 200)
@@ -88,17 +94,10 @@ class HXHHttpUtils {
             'statusCode : ${errorResp.statusCode}\nstatusMessage : ${errorResp.statusMessage}'
             '\nerrorResp.data.message : ${errorResp.data['message']}');
         completion(
-          errorResp.statusCode,
-          false,
-          errorResp.data['message'] ?? 'error',
-        );
+            errorResp.statusCode, false, errorResp.data['message'] ?? 'error');
       } else {
         print('error type : ${e.type}\nerror : ${e.error.message}');
-        completion(
-          e.type.index ?? 0,
-          false,
-          e.error.message ?? '-',
-        );
+        completion(e.type.index ?? 0, false, e.error.message ?? '-');
       }
     }
   }
