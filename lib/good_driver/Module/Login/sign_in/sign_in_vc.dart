@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class SignInVC extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class SignInVCState extends State<SignInVC> {
     var www = window.physicalSize;
     print(www.toString() + '\n' '${window.devicePixelRatio}');
   }
+
   GlobalKey globalKey = GlobalKey();
 
   @override
@@ -23,17 +25,53 @@ class SignInVCState extends State<SignInVC> {
     return Scaffold(
       appBar: buildAppBar(),
       body: Container(
-        child: Image.asset(
-          'lib/images/3.0x/login_bg.png',
+//        padding: EdgeInsets.all(10),
 
-          ///如何填充
-//          fit: BoxFit.cover,
-          ///重复显示
+        child: Stack(
+
+          alignment: Alignment.topCenter,
+          children: <Widget>[
+            Container(
+              child: Image.asset(
+                'lib/images/3.0x/login_bg.png',
+
+                ///如何填充
+                fit: BoxFit.cover,
+                height: double.infinity,
+
+                ///重复显示
 //          repeat: ImageRepeat.repeatX,
+              ),
+            ),
+            ListView(
+              primary: false,
+              physics: ClampingScrollPhysics(
+
+              ),
+              children: <Widget>[
+
+                Container(
+
+//              alignment: Alignment.center,
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text('测试'),
+                  height: 400,
+                  color: Colors.red,
+                ),
+
+                Container(
+
+//              alignment: Alignment.center,
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text('测试'),
+                  height: 400,
+                  color: Colors.lightGreen,
+                ),
+
+              ],
+            ),
+          ],
         ),
-        color: Colors.lightBlue,
-        key: globalKey,
-        width: MediaQuery.of(context).size.width,
       ),
     );
   }
@@ -54,7 +92,8 @@ class SignInVCState extends State<SignInVC> {
 
             print('global key : ${globalKey.currentContext.size}');
 
-            print('MediaQuery.of(context).padding.top : ${MediaQuery.of(context).padding.top}');
+            print(
+                'MediaQuery.of(context).padding.top : ${MediaQuery.of(context).padding.top}');
           },
         ),
         FlatButton(
