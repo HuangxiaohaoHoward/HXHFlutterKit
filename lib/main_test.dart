@@ -1,16 +1,44 @@
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:hxh_flutter_kit/good_driver/Module/Login/sign_in/sign_in_vc.dart';
 import 'package:hxh_flutter_kit/good_driver/NetworkManager/commonModels/sdg_cooperator_model.dart';
-import 'package:hxh_flutter_kit/good_driver/NetworkManager/network_manager.dart';
+import 'package:hxh_flutter_kit/good_driver/common/constant/constant.dart';
 
 ///业务类
 import 'good_driver/Module/Login/sign_in/sign_in_vc.dart';
 
+///工具类
+import 'good_driver/common/constant/constant.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hxh_flutter_kit/good_driver/NetworkManager/network_manager.dart';
+
+Widget _rootVC;
+
 void main() {
-  runApp(MyApp());
+//  runApp(MyApp());
+  getRootVC();
+}
+
+Future<Map> getUserInfo() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  Map map = prefs.get(Constant.key_user);
+  print(map.toString());
+  return map;
+}
+
+///获取根控件
+getRootVC() {
+//  runApp(MyApp());
+
+  Future<Map> map = getUserInfo();
+  map.then((Map map) {
+    if (map == null || map.isEmpty) {
+      _rootVC = SignInVC();
+    } else {
+      _rootVC = MyHomePage(title: 'root vc');
+    }
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +49,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'http utils Home Page'),
+//      home: MyHomePage(title: 'good driver '),
+      home: _rootVC,
     );
   }
 }
@@ -50,8 +79,9 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             RaisedButton(
               child: Text('跳登录页'),
-              onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
                   return SignInVC();
                 }));
               },
@@ -70,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
   _testRequestAction() {
     this.setState(() {
       _str = '请求中';
@@ -79,19 +110,17 @@ class _MyHomePageState extends State<MyHomePage> {
       'page': '1',
       'limit': '999',
     };
-    SDGDataManager().getCooperation(param, (state, isSuccess, resp){
+    SDGDataManager().getCooperation(param, (state, isSuccess, resp) {
       if (isSuccess) {
         for (var i = 0; i < resp.length; ++i) {
           SDGCooperatorModel model = resp[i];
-          this.setState((){
+          this.setState(() {
             _str = _str + '\n' + model.customerName;
-
           });
         }
       } else {
-        this.setState((){
+        this.setState(() {
           _str = resp.toString();
-
         });
       }
     });
